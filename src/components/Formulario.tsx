@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 // Types
-import { type Persona } from '../types/Types'
+import { type Persona } from "../types/Types";
 
 // Context
-import { useSplitStore } from '../store/splitStore'
+import { useSplitStore } from "../store/splitStore";
 
 const Formulario = () => {
-  const { personas, addDato } = useSplitStore(state => state);
+  const { personas, addDato } = useSplitStore((state) => state);
 
-  const [personasDropdownVisible, setPersonasDropdownVisible] = useState<boolean>(false);
+  const [personasDropdownVisible, setPersonasDropdownVisible] =
+    useState<boolean>(false);
   const [inputPersona, setInputPersona] = useState<string>("");
   const [inputCantidad, setInputCantidad] = useState<string>("");
   const [inputConcepto, setInputConcepto] = useState<string>("");
@@ -21,24 +22,34 @@ const Formulario = () => {
     setInputCantidad("");
     setInputConcepto("");
     setInputPersona("");
-  }
+  };
+
+  /**
+   * Función que al clicar en una persona de la lista
+   * inserta el nombre como valor del input y cierra la lista
+   * @param nombre
+   */
+  const handleClickPersonaLista = (nombre: string) => {
+    setInputPersona(nombre);
+    setPersonasDropdownVisible(false);
+  };
 
   /**
    * Función que se ejecuta al enviar el formulario
-   * @param event 
+   * @param event
    */
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault()
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
 
     const dato = {
       nombre: inputPersona,
-      datos: [{cantidad: Number(inputCantidad), concepto: inputConcepto}]
-    }    
+      datos: [{ cantidad: Number(inputCantidad), concepto: inputConcepto }],
+    };
 
     addDato(dato);
 
     resetFormulario();
-  }
+  };
 
   /**
    * Cierra el dropdown del listado de personas al hacer click fuera de él
@@ -56,7 +67,7 @@ const Formulario = () => {
     return () => {
       document.removeEventListener("click", handleClickOutsideDropdown);
     };
-  })
+  });
 
   return (
     <form
@@ -82,18 +93,35 @@ const Formulario = () => {
               />
               <span
                 className="cursor-pointer"
-                onClick={() => setPersonasDropdownVisible((prevState) => !prevState)}
+                onClick={() =>
+                  setPersonasDropdownVisible((prevState) => !prevState)
+                }
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" className={personasDropdownVisible ? "rotate180" : ""}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  className={personasDropdownVisible ? "rotate180" : ""}
+                >
                   <path d="M7 10L12 15L17 10H7Z" />
                 </svg>
               </span>
             </span>
-            {personasDropdownVisible && personas.length > 0 && (
-              <div className="absolute bg-slate-50 dark:bg-zinc-800 w-full border border-t-0 rounded-md shadow">
-                {personas.map((p: Persona) => (
-                  <span key={p.nombre} className="block rounded-md w-full py-1 px-2 pointer hover:bg-zinc-700">{p.nombre}</span>
-                ))}
+            {personas?.length > 0 && personasDropdownVisible && (
+              <div className="absolute bg-slate-50 dark:bg-zinc-800 w-full rounded-md shadow border border-t-0 flex flex-col gap-1">
+                {personas.map((p: Persona) => {
+                  if (p.nombre.toLowerCase().includes(inputPersona.toLowerCase())) {
+                    return (
+                      <span
+                        key={p.nombre}
+                        onClick={() => handleClickPersonaLista(p.nombre)}
+                        className="block rounded-md w-full py-1 px-2 cursor-pointer hover:bg-zinc-700"
+                      >
+                        {p.nombre}
+                      </span>
+                    );
+                  }
+                })}
               </div>
             )}
           </div>
@@ -107,7 +135,9 @@ const Formulario = () => {
                 value={inputCantidad}
                 required
                 className="grow bg-transparent focus-visible:outline-0"
-                onChange={(event) => {setInputCantidad(event.target.value)}}
+                onChange={(event) => {
+                  setInputCantidad(event.target.value);
+                }}
               />
               <span>€</span>
             </span>
@@ -119,8 +149,11 @@ const Formulario = () => {
             placeholder="Descripción"
             id="input-descripcion"
             name="input-descripcion"
+            value={inputConcepto}
             className="w-full bg-slate-50 dark:bg-zinc-800 py-1 px-2 border rounded-md md:text-md shadow bg-transparent focus-visible:outline-0"
-            onChange={(event) => {setInputConcepto(event.target.value)}}
+            onChange={(event) => {
+              setInputConcepto(event.target.value);
+            }}
           />
         </div>
       </div>
