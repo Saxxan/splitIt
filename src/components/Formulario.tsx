@@ -6,6 +6,9 @@ import { type Persona } from "../types/Types";
 // Context
 import { useSplitStore } from "../store/splitStore";
 
+// Utils
+import { capitalizeName } from "../utils/textUtils";
+
 const Formulario = () => {
   const { personas, addDato } = useSplitStore((state) => state);
 
@@ -42,7 +45,7 @@ const Formulario = () => {
     event.preventDefault();
 
     const dato = {
-      nombre: inputPersona,
+      nombre: capitalizeName(inputPersona),
       datos: [{ cantidad: Number(inputCantidad), concepto: inputConcepto }],
     };
 
@@ -110,12 +113,14 @@ const Formulario = () => {
             {personas?.length > 0 && personasDropdownVisible && (
               <div className="absolute bg-slate-50 dark:bg-zinc-800 w-full rounded-md shadow border border-t-0 flex flex-col gap-1">
                 {personas.map((p: Persona) => {
-                  if (p.nombre.toLowerCase().includes(inputPersona.toLowerCase())) {
+                  if (
+                    p.nombre.toLowerCase().includes(inputPersona.toLowerCase())
+                  ) {
                     return (
                       <span
                         key={p.nombre}
                         onClick={() => handleClickPersonaLista(p.nombre)}
-                        className="block rounded-md w-full py-1 px-2 cursor-pointer hover:bg-zinc-700"
+                        className="block rounded-md w-full py-1 px-2 cursor-pointer hover:bg-slate-200 dark:hover:bg-zinc-700"
                       >
                         {p.nombre}
                       </span>
@@ -144,17 +149,19 @@ const Formulario = () => {
           </div>
         </div>
         <div>
-          <input
-            type="text"
-            placeholder="Descripción"
-            id="input-descripcion"
-            name="input-descripcion"
-            value={inputConcepto}
-            className="w-full bg-slate-50 dark:bg-zinc-800 py-1 px-2 border rounded-md md:text-md shadow bg-transparent focus-visible:outline-0"
-            onChange={(event) => {
-              setInputConcepto(event.target.value);
-            }}
-          />
+          <span className="flex bg-slate-50 dark:bg-zinc-800 justify-between w-full py-1 px-2 border rounded-md md:text-md shadow">
+            <input
+              type="text"
+              placeholder="Descripción"
+              id="input-descripcion"
+              name="input-descripcion"
+              value={inputConcepto}
+              className="grow bg-transparent focus-visible:outline-0"
+              onChange={(event) => {
+                setInputConcepto(event.target.value);
+              }}
+            />
+          </span>
         </div>
       </div>
       <div className="w-6/12 md:w-4/12 max-w-52">

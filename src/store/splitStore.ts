@@ -18,11 +18,23 @@ export const useSplitStore = create<SplitStoreState>((set, get) => ({
   personas: [
     {
       nombre: "Salva",
-      datos: [],
+      datos: [{
+        cantidad: 10,
+        concepto: "Cervezas"
+      }],
     },
     {
       nombre: "Paloma",
-      datos: [],
+      datos: [
+        {
+          cantidad: 10,
+          concepto: "Cervezas",
+        },
+        {
+          cantidad: 20,
+          concepto: "Pizza",
+        },
+      ],
     },
   ],
 
@@ -30,7 +42,7 @@ export const useSplitStore = create<SplitStoreState>((set, get) => ({
     const currentPersonas = get().personas;
     if (
       currentPersonas.length > 0 &&
-      currentPersonas.findIndex((p: Persona) => p.nombre === persona.nombre) >
+      currentPersonas.findIndex((p: Persona) => p.nombre.toLowerCase() === persona.nombre.toLowerCase()) >
         -1
     ) {
       set((state: any) => ({
