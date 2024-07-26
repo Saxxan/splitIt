@@ -1,0 +1,10 @@
+/* Estilos personalizados para el toaster de notificaciones */
+
+.toasterCustom {
+    background-color: rgb(240 253 244);
+   	color: rgb(34 197 94);
+
+    & svg > * {
+        fill: rgb(34 197 94);
+    }
+}

@@ -11,10 +11,15 @@ const ListadoPersonas = () => {
     const { personas } = useSplitStore(state => state)
 
   return (
-    <ul className="list-none flex flex-col gap-2 lg:gap-3 w-full mx-auto p-2" style={{ maxWidth: '997.33px' }}>
-        {personas.map((p: Persona, index) => <PersonaResume key={index} persona={p} />)}
+    <ul
+      className="list-none flex flex-col gap-2 lg:gap-3 w-full mx-auto p-2"
+      style={{ maxWidth: "997.33px" }}
+    >
+      {personas.map((p: Persona, index) =>
+        p.datos.length > 0 ? <PersonaResume key={index} persona={p} /> : null
+      )}
     </ul>
-  )
+  );
 }
 
 export default ListadoPersonas

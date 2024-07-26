@@ -16,26 +16,26 @@ interface SplitStoreState {
 
 export const useSplitStore = create<SplitStoreState>((set, get) => ({
   personas: [
-    {
-      nombre: "Salva",
-      datos: [{
-        cantidad: 10,
-        concepto: "Cervezas"
-      }],
-    },
-    {
-      nombre: "Paloma",
-      datos: [
-        {
-          cantidad: 10,
-          concepto: "Cervezas",
-        },
-        {
-          cantidad: 20,
-          concepto: "Pizza",
-        },
-      ],
-    },
+    // {
+    //   nombre: "Salva",
+    //   datos: [{
+    //     cantidad: 10,
+    //     concepto: "Cervezas"
+    //   }],
+    // },
+    // {
+    //   nombre: "Paloma",
+    //   datos: [
+    //     {
+    //       cantidad: 10,
+    //       concepto: "Cervezas",
+    //     },
+    //     {
+    //       cantidad: 20,
+    //       concepto: "Pizza",
+    //     },
+    //   ],
+    // },
   ],
 
   addDato: (persona) => {
@@ -72,7 +72,7 @@ export const useSplitStore = create<SplitStoreState>((set, get) => ({
   removeGasto: (persona, gasto) =>
     set((state: any) => ({
       personas: state.personas.map((p: Persona) =>
-        p === persona ? { ...p, datos: p.datos.filter((g) => g !== gasto) } : p
+        p === persona ? { ...p, datos: p.datos.filter((g) => g.id !== gasto.id) } : p
       ),
     })),
 
@@ -80,7 +80,7 @@ export const useSplitStore = create<SplitStoreState>((set, get) => ({
     set((state: any) => ({
       personas: state.personas.map((p: Persona) =>
         p === persona
-          ? { ...p, datos: p.datos.map((g) => (g === gasto ? gasto : g)) }
+          ? { ...p, datos: p.datos.map((g) => (g.id === gasto.id ? gasto : g)) }
           : p
       ),
     })),

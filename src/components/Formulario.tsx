@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 
 // Types
 import { type Persona } from "../types/Types";
@@ -8,6 +9,9 @@ import { useSplitStore } from "../store/splitStore";
 
 // Utils
 import { capitalizeName } from "../utils/textUtils";
+
+// Styles
+import toasterStyles from "../styles/toaster.module.css";
 
 const Formulario = () => {
   const { personas, addDato } = useSplitStore((state) => state);
@@ -46,11 +50,11 @@ const Formulario = () => {
 
     const dato = {
       nombre: capitalizeName(inputPersona),
-      datos: [{ cantidad: Number(inputCantidad), concepto: inputConcepto }],
+      datos: [{ id: Date.now(), cantidad: Number(inputCantidad), concepto: inputConcepto }],
     };
 
     addDato(dato);
-
+    toast.success("Gasto añadido correctamente");
     resetFormulario();
   };
 
@@ -77,6 +81,15 @@ const Formulario = () => {
       onSubmit={handleSubmit}
       className="w-full mx-auto max-w-6xl mb-10 p-2 flex flex-col md:flex-row gap-4 items-center justify-center"
     >
+      <Toaster
+        richColors
+        position="bottom-right"
+        toastOptions={{
+          classNames: {
+            toast: toasterStyles.toasterCustom,
+          },
+        }}
+      />
       <div className="w-full md:w-8/12 flex flex-col gap-3">
         <div className="flex gap-3">
           <div id="wrapper-persona" className="w-1/2 relative">
@@ -139,7 +152,7 @@ const Formulario = () => {
                 placeholder="Cantidad"
                 value={inputCantidad}
                 required
-                className="grow bg-transparent focus-visible:outline-0"
+                className="grow bg-transparent focus-visible:outline-0 pe-1"
                 onChange={(event) => {
                   setInputCantidad(event.target.value);
                 }}

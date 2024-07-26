@@ -1,0 +1,26 @@
+/* Tooltips styles */
+
+.tooltip {
+    position: relative;
+    
+    &::after {
+        content: attr(data-tooltip);
+        visibility: hidden;
+        position: absolute;
+        z-index: 2;
+        top: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 400;
+        background-color: rgba(39,39,42);
+        color: rgba(245,245,245);
+        white-space: nowrap;
+    }
+
+    &:hover::after {
+        visibility: visible;
+    }
+}
