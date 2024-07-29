@@ -78,10 +78,11 @@ const GastoItem: React.FC<Props> = ({dato, persona}) => {
         </div>
         <input
           type="text"
-          className="bg-transparent focus-visible:outline-0 focus:border-b text-gray-100 grow"
+          className="bg-transparent focus-visible:outline-0 focus:border-b text-gray-100 grow placeholder:text-gray-300 placeholder:font-regular"
           value={newDato.concepto}
           onChange={(event) => handleChangeConcepto(event.target)}
           onBlur={saveNewGasto}
+          placeholder='Concepto'
         />
       </div>
       <button

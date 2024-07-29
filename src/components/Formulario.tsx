@@ -49,7 +49,7 @@ const Formulario = () => {
     event.preventDefault();
 
     const dato = {
-      nombre: capitalizeName(inputPersona),
+      personaName: capitalizeName(inputPersona),
       datos: [{ id: Date.now(), cantidad: Number(inputCantidad), concepto: inputConcepto }],
     };
 
@@ -90,6 +90,7 @@ const Formulario = () => {
           },
         }}
       />
+      
       <div className="w-full md:w-8/12 flex flex-col gap-3">
         <div className="flex gap-3">
           <div id="wrapper-persona" className="w-1/2 relative">
@@ -127,7 +128,7 @@ const Formulario = () => {
               <div className="absolute bg-slate-50 dark:bg-zinc-800 w-full rounded-md shadow border border-t-0 flex flex-col gap-1">
                 {personas.map((p: Persona) => {
                   if (
-                    p.nombre.toLowerCase().includes(inputPersona.toLowerCase())
+                    p.nombre?.toLowerCase().includes(inputPersona.toLowerCase())
                   ) {
                     return (
                       <span

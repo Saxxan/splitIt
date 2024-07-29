@@ -5,9 +5,9 @@ import { type Persona, type Dato } from "../types/Types";
 
 interface SplitStoreState {
   personas: Persona[];
-  addDato: (persona: Persona) => void;
+  addDato: (dato : {personaName: string, datos: Dato[]}) => void;
   removePersona: (persona: Persona) => void;
-  editPersona: (persona: Persona) => void;
+  editPersonaName: (id: number, personaName: string) => void;
   removeGasto: (persona: Persona, gasto: Dato) => void;
   editGasto: (persona: Persona, gasto: Dato) => void;
   calculateResult: () => void;
@@ -38,34 +38,38 @@ export const useSplitStore = create<SplitStoreState>((set, get) => ({
     // },
   ],
 
-  addDato: (persona) => {
+  addDato: (dato) => {
     const currentPersonas = get().personas;
     if (
       currentPersonas.length > 0 &&
-      currentPersonas.findIndex((p: Persona) => p.nombre.toLowerCase() === persona.nombre.toLowerCase()) >
-        -1
+      currentPersonas.findIndex((p: Persona) => p.nombre === dato.personaName) > -1
     ) {
       set((state: any) => ({
         personas: state.personas.map((p: Persona) =>
-          p.nombre.toLowerCase() === persona.nombre.toLowerCase()
-            ? { ...p, datos: [...p.datos, persona.datos[0]] }
+          p.nombre === dato.personaName
+            ? { ...p, datos: [...p.datos, dato.datos[0]] }
             : p
         ),
       }));
     } else {
-      set((state: any) => ({ personas: [...state.personas, persona] }));
+      const newPersona = {
+        id: Date.now(),
+        nombre: dato.personaName,
+        datos: dato.datos,
+      };
+      set((state: any) => ({ personas: [...state.personas, newPersona] }));
     }
   },
 
   removePersona: (persona) =>
     set((state: any) => ({
-      personas: state.personas.filter((p: Persona) => p !== persona),
+      personas: state.personas.filter((p: Persona) => p.id !== persona.id),
     })),
 
-  editPersona: (persona) =>
+  editPersonaName: (id, personaName) =>
     set((state: any) => ({
       personas: state.personas.map((p: Persona) =>
-        p === persona ? persona : p
+        p.id === id ? { ...p, nombre: personaName } : p
       ),
     })),
 

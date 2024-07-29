@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 // Context
-import { useSplitStore } from '../store/splitStore'
+import { useSplitStore } from "../store/splitStore";
 
 // Types
-import { type Persona } from '../types/Types'
-import PersonaResume from './PersonaResume'
+import { type Persona } from "../types/Types";
+import PersonaResume from "./PersonaResume";
 
 const ListadoPersonas = () => {
-    const { personas } = useSplitStore(state => state)
+  const { personas } = useSplitStore((state) => state);
+
+  useEffect(() => {
+    console.log(personas);
+  }, [personas]);
 
   return (
     <ul
@@ -20,6 +24,6 @@ const ListadoPersonas = () => {
       )}
     </ul>
   );
-}
+};
 
-export default ListadoPersonas
+export default ListadoPersonas;
