@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Toaster, toast } from 'sonner'
 
 // Types
-import { type Dato, type Persona } from '../types/Types'
+import { type Dato, type Persona, ResponseTypes } from '../types/Types'
 
 // Context
 import { useSplitStore } from "../store/splitStore";
@@ -21,10 +21,10 @@ const GastoItem: React.FC<Props> = ({dato, persona}) => {
 
     const {editGasto, removeGasto} = useSplitStore(state => state);
 
-    const saveNewGasto = ():void => {
-        editGasto(persona, newDato);
-        toast.success("Gasto actualizado correctamente");
-    }
+    const saveNewGasto = async (): Promise<void> => {
+      editGasto(persona, newDato);
+      toast.success("Gasto actualizado correctamente");
+    };
 
     /**
      * Función que recibe el elemento HTML de la cantidad del gasto, de él saca el valor modificado,
@@ -47,9 +47,11 @@ const GastoItem: React.FC<Props> = ({dato, persona}) => {
     /**
      * Eliminar el gasto del estado
      */
-    const handleClickRemoveGastoButton = () => {
-        removeGasto(persona, newDato);
-        toast.success('Gasto eliminado correctamente');
+    const handleClickRemoveGastoButton = async () : Promise<void> => {
+        const response = removeGasto(persona, newDato);
+        if (typeof response !== 'boolean') {
+          response.status === ResponseTypes.SUCCESS ? toast.success('Gasto eliminado correctamente') : toast.error('Error al eliminar el gasto');
+        }
     }
 
   return (
@@ -60,6 +62,10 @@ const GastoItem: React.FC<Props> = ({dato, persona}) => {
         toastOptions={{
           classNames: {
             toast: toasterStyles.toasterCustom,
+            error: toasterStyles.error,
+            success: toasterStyles.success,
+            warning: toasterStyles.warning,
+            info: toasterStyles.info,
           },
         }}
       />
@@ -82,7 +88,7 @@ const GastoItem: React.FC<Props> = ({dato, persona}) => {
           value={newDato.concepto}
           onChange={(event) => handleChangeConcepto(event.target)}
           onBlur={saveNewGasto}
-          placeholder='Concepto'
+          placeholder="Concepto"
         />
       </div>
       <button

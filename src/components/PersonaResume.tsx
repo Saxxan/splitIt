@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
 
 // Types
-import { type Persona } from "../types/Types";
+import { type Persona, ResponseTypes } from "../types/Types";
 
 // Components
 import GastoItem from "./GastoItem";
@@ -23,18 +23,22 @@ const PersonaResume: React.FC<Props> = ({ persona }) => {
   const { removePersona, editPersonaName } = useSplitStore((state) => state);
   const [personaName, setPersonaName] = useState<string>(persona.nombre);
 
-  const saveNewUserName = () => {
-    editPersonaName(persona.id, personaName);
-    toast.success("Nombre de persona modificado correctamente");
+  const saveNewUserName = async (): Promise<void> => {
+    const response = editPersonaName(persona.id, personaName);
+    response.status === ResponseTypes.SUCCESS
+      ? toast.success("Nombre de persona modificado correctamente")
+      : toast.error("Error al modificar el nombre de la persona");
   };
 
   /**
    * Función que maneja el click en el botón de eliminar usuario de la cuenta,
    * lo borra del estado
    */
-  const handleClickRemovePersonaButton = () => {
-    removePersona(persona);
-    toast.success("Usuario eliminado correctamente");
+  const handleClickRemovePersonaButton = async (): Promise<void> => {
+    const response = await removePersona(persona);
+    response.status === ResponseTypes.SUCCESS
+      ? toast.success("Usuario eliminado correctamente")
+      : toast.error("Error al eliminar usuario");
   };
 
   return (
@@ -45,6 +49,10 @@ const PersonaResume: React.FC<Props> = ({ persona }) => {
         toastOptions={{
           classNames: {
             toast: toasterStyles.toasterCustom,
+            error: toasterStyles.error,
+            success: toasterStyles.success,
+            warning: toasterStyles.warning,
+            info: toasterStyles.info,
           },
         }}
       />

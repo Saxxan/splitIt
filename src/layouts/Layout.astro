@@ -1,6 +1,6 @@
 ---
 // Dependencies
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 
 // Component
 import Header from "../components/Header.astro";
@@ -21,7 +21,16 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      href="/light-mode-favicon.svg"
+      rel="icon"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      href="/dark-mode-favicon.svg"
+      rel="icon"
+      media="(prefers-color-scheme: dark)"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
