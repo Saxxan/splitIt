@@ -87,7 +87,11 @@ const PersonaResume: React.FC<Props> = ({ persona }) => {
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            className={isExpanded ? "rotate180" : ""}
+            className={
+              isExpanded
+                ? "transition ease-in-out duration-300 rotate-180"
+                : "transition ease-in-out duration-300"
+            }
           >
             <path d="M7 10L12 15L17 10H7Z" />
           </svg>

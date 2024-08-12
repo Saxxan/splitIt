@@ -17,6 +17,7 @@ const ListadoPersonas = () => {
    */
   useEffect(() => {
     setCurrentPersonas(personas);
+    console.log(personas);
   }, [personas]);
 
   return (

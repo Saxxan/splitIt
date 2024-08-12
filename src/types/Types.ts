@@ -3,6 +3,7 @@ export interface Dato {
   id: number;
   cantidad: number;
   concepto: string;
+  users: string[];
 }
 
 // Definido tipo Persona
