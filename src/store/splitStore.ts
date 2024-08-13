@@ -5,6 +5,7 @@ import { type Persona, type Dato, type ResponseMsg, ResponseTypes } from "../typ
 
 interface SplitStoreState {
   personas: Persona[];
+  addPersonas: (personas: string[]) => void;
   addDato: (dato : {personaName: string, datos: Dato[]}) => ResponseMsg;
   removePersona: (persona: Persona) => ResponseMsg;
   editPersonaName: (id: number, personaName: string) => ResponseMsg;
@@ -15,28 +16,21 @@ interface SplitStoreState {
 }
 
 export const useSplitStore = create<SplitStoreState>((set, get) => ({
-  personas: [
-    // {
-    //   nombre: "Salva",
-    //   datos: [{
-    //     cantidad: 10,
-    //     concepto: "Cervezas"
-    //   }],
-    // },
-    // {
-    //   nombre: "Paloma",
-    //   datos: [
-    //     {
-    //       cantidad: 10,
-    //       concepto: "Cervezas",
-    //     },
-    //     {
-    //       cantidad: 20,
-    //       concepto: "Pizza",
-    //     },
-    //   ],
-    // },
-  ],
+  personas: [],
+
+  addPersonas: (personas) => {
+    const arrayNewPersonas: Persona[] = [];
+    console.log(personas);
+    personas.forEach((p) => {
+      const personaStructure = {
+        id: Date.now(),
+        nombre: p.toLowerCase(),
+        datos: [],
+      }
+      arrayNewPersonas.push(personaStructure);
+    })
+    set((state: any) => ({ personas: [...state.personas, ...arrayNewPersonas] }));
+  },
 
   addDato: (dato) => {
     const currentPersonas = get().personas;

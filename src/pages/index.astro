@@ -1,11 +1,9 @@
 ---
 // Componentes
 import Layout from "../layouts/Layout.astro";
-import Formulario from "../components/Formulario";
-import ListadoPersonas from "../components/ListadoPersonas";
+import Welcome from "../components/Welcome";
 ---
 
 <Layout title="Split It">
-    <Formulario client:load />
-    <ListadoPersonas client:idle />
+    <Welcome client:load />
 </Layout>
